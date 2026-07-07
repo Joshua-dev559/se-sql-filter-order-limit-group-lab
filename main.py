@@ -10,7 +10,6 @@ conn1 = sqlite3.connect("planets.db")
 pd.read_sql("SELECT * FROM planets;", conn1)
 
 # STEP 1
-# Return all columns for planets that have 0 moons.
 df_no_moons = pd.read_sql("""
 SELECT *
 FROM planets
@@ -18,7 +17,6 @@ WHERE num_of_moons = 0;
 """, conn1)
 
 # STEP 2
-# Return the name and mass of each planet that has exactly 7 letters.
 df_name_seven = pd.read_sql("""
 SELECT name, mass
 FROM planets
@@ -28,7 +26,6 @@ WHERE LENGTH(name) = 7;
 ##### Part 2: Advanced Filtering #####
 
 # STEP 3
-# Return the name and mass for planets with mass <= 1.00.
 df_mass = pd.read_sql("""
 SELECT name, mass
 FROM planets
@@ -36,16 +33,14 @@ WHERE mass <= 1.00;
 """, conn1)
 
 # STEP 4
-# Return all columns for planets with at least one moon and mass < 1.00.
 df_mass_moon = pd.read_sql("""
 SELECT *
 FROM planets
-WHERE num_of_moons >= 1
+WHERE num_of_moons > 0
 AND mass < 1.00;
 """, conn1)
 
 # STEP 5
-# Return the name and color of planets whose color contains "blue".
 df_blue = pd.read_sql("""
 SELECT name, color
 FROM planets
@@ -61,7 +56,6 @@ conn2 = sqlite3.connect("dogs.db")
 pd.read_sql("SELECT * FROM dogs;", conn2)
 
 # STEP 6
-# Return hungry dogs sorted from youngest to oldest.
 df_hungry = pd.read_sql("""
 SELECT name, age, breed
 FROM dogs
@@ -70,8 +64,6 @@ ORDER BY age ASC;
 """, conn2)
 
 # STEP 7
-# Return hungry dogs between ages 2 and 7 inclusive,
-# sorted alphabetically.
 df_hungry_ages = pd.read_sql("""
 SELECT name, age, hungry
 FROM dogs
@@ -81,16 +73,12 @@ ORDER BY name ASC;
 """, conn2)
 
 # STEP 8
-# Return the 4 oldest dogs, then sort them alphabetically by breed.
+# Return the four oldest dogs.
 df_4_oldest = pd.read_sql("""
 SELECT name, age, breed
-FROM (
-    SELECT name, age, breed
-    FROM dogs
-    ORDER BY age DESC
-    LIMIT 4
-)
-ORDER BY breed ASC;
+FROM dogs
+ORDER BY age DESC
+LIMIT 4;
 """, conn2)
 
 ##### Part 4: Aggregation #####
@@ -102,14 +90,12 @@ conn3 = sqlite3.connect("babe_ruth.db")
 pd.read_sql("SELECT * FROM babe_ruth_stats;", conn3)
 
 # STEP 9
-# Return total number of years Babe Ruth played.
 df_ruth_years = pd.read_sql("""
 SELECT COUNT(*) AS total_years
 FROM babe_ruth_stats;
 """, conn3)
 
 # STEP 10
-# Return total career home runs.
 df_hr_total = pd.read_sql("""
 SELECT SUM(HR) AS total_home_runs
 FROM babe_ruth_stats;
@@ -118,19 +104,17 @@ FROM babe_ruth_stats;
 ##### Part 5: Grouping and Aggregation #####
 
 # STEP 11
-# Return each team and number of years played.
 df_teams_years = pd.read_sql("""
 SELECT team,
-COUNT(*) AS number_years
+       COUNT(*) AS number_years
 FROM babe_ruth_stats
 GROUP BY team;
 """, conn3)
 
 # STEP 12
-# Return each team and average at bats greater than 200.
 df_at_bats = pd.read_sql("""
 SELECT team,
-AVG(at_bats) AS average_at_bats
+       AVG(at_bats) AS average_at_bats
 FROM babe_ruth_stats
 GROUP BY team
 HAVING AVG(at_bats) > 200;
