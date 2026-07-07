@@ -14,7 +14,7 @@ pd.read_sql("SELECT * FROM planets;", conn1)
 df_no_moons = pd.read_sql("""
 SELECT *
 FROM planets
-WHERE moons = 0;
+WHERE moon_count = 0;
 """, conn1)
 
 # STEP 2
@@ -40,7 +40,7 @@ WHERE mass <= 1.00;
 df_mass_moon = pd.read_sql("""
 SELECT *
 FROM planets
-WHERE moons >= 1
+WHERE moon_count >= 1
   AND mass < 1.00;
 """, conn1)
 
